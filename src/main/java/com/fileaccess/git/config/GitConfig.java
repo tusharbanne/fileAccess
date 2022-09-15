@@ -10,6 +10,8 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,9 +24,16 @@ public class GitConfig {
 		Git git = null;
 		try {
 			Path p = Files.createDirectories(Paths.get("files"));
-			File f = p.toFile();
+			File f = new File("files");
 			if(f.list().length > 0) {
-				//git = Git.open("https://github.com/tusharbanne/documents", f);
+				git = Git.open(f);
+				/*
+				 * FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+				 * Repository repository = repositoryBuilder.setGitDir(new File("files/.git"))
+				 * .readEnvironment() // scan environment GIT_* variables .findGitDir() // scan
+				 * up the file system tree .setMustExist(true) .build();
+				 */
+				
 			}
 			else {
 				git = Git.cloneRepository()
